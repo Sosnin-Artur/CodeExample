@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerView : MonoBehaviour, IPlayerView
 {            
+    public event Action OnEnableEvent;
+    public event Action OnDisableEvent;
+
     [SerializeField]
     [Tooltip("Curve for change movement initial speed")]
     private AnimationCurve _speedCurve = AnimationCurve.Constant(0, 1, 10);
@@ -22,32 +25,7 @@ public class PlayerView : MonoBehaviour, IPlayerView
     private SpriteRenderer _sprite;
 
     private IEnumerator _moveCoroutine;
-    private float _directionX;
-
-    public Rigidbody2D RigidBody
-    { 
-        get
-        {
-            return _rb;
-        }
-        set
-        {
-            _rb = value;
-        }
-
-    }
-
-    public SpriteRenderer Sprite
-    {
-        get
-        {
-            return _sprite;
-        }
-        set
-        {
-            _sprite = value;
-        }
-    }    
+    private float _directionX;    
 
     public void MoveInDirectionX(float direction)
     {        
@@ -118,6 +96,16 @@ public class PlayerView : MonoBehaviour, IPlayerView
             yield return wait;
         }
         while (!IsGrounded());       
-    }    
+    }
+
+    private void OnEnable()
+    {
+        OnEnableEvent?.Invoke();
+    }
+
+    private void OnDisable()
+    {
+        OnDisableEvent?.Invoke();
+    }
 }
 

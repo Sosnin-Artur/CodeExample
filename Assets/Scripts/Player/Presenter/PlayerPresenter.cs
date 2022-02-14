@@ -2,52 +2,56 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
-public class PlayerPresenter : IPlayerPresenter
+public class PlayerPresenter : IPlayerPresenter, IInitializable
 {
-    private PlayerModel _playerModel;
-    private PlayerView _playerView;
+    private IPlayerModel _playerModel;
+    private IPlayerView _playerView;
+    private PlayerInputAction _control;    
 
-    public PlayerPresenter(PlayerView view, PlayerModel model)
+    public PlayerPresenter(IPlayerView view, IPlayerModel model, PlayerInputAction control)
     {
         _playerView = view;
         _playerModel = model;
-
-        InitializeModel();
+        _control = control;             
     }
 
-    private void InitializeModel()
+    [Inject]
+    public void Initialize()
     {
-        _playerModel.Control = new PlayerInputAction();
+        _control = new PlayerInputAction();
         
-        _playerModel.Control.PlayerControl.Move.started += OnMoveStarted;
-        _playerModel.Control.PlayerControl.Move.canceled += OnMoveCancelled;
-        _playerModel.Control.PlayerControl.Jump.started += OnJump;
+        _control.PlayerControl.Move.started += OnMoveStarted;
+        _control.PlayerControl.Move.canceled += OnMoveCancelled;
+        _control.PlayerControl.Jump.started += OnJump;        
 
-        _playerModel.Control.Enable();
+        _playerView.OnEnableEvent += OnEnable;
+        _playerView.OnDisableEvent += OnDisable;
     }
 
-    private void OnMoveStarted(InputAction.CallbackContext context)
+    public void OnMoveStarted(InputAction.CallbackContext context)
     {        
         var direction = context.ReadValue<float>();
         _playerView.MoveInDirectionX(direction);
     }
 
-    private void OnMoveCancelled(InputAction.CallbackContext context)
+    public void OnMoveCancelled(InputAction.CallbackContext context)
     {        
         _playerView.StopMove();        
     }
 
-    private void OnJump(InputAction.CallbackContext context)
+    public void OnJump(InputAction.CallbackContext context)
     {
         _playerView.OnJump();
     }
+
     private void OnEnable()
     {
-        _playerModel.Control.Enable();
+        _control.Enable();
     }
     private void OnDisable()
     {
-        _playerModel.Control.Disable();
-    }
+        _control.Disable();
+    }    
 }
