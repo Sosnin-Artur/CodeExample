@@ -9,7 +9,7 @@ public class PlayerPresenter : BasePlayerPresenter, IInitializable
     private IModel _playerModel;    
     private PlayerInputAction _control;    
 
-    public PlayerPresenter(IPlayerView view, IModel model, PlayerInputAction control) : base(view)
+    public PlayerPresenter(IPlayerView view, IPlayerModel model, PlayerInputAction control) : base(view)
     {        
         _playerModel = model;
         _control = control;             
