@@ -4,20 +4,19 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class PlayerPresenter : IPlayerPresenter, IInitializable
+public class PlayerPresenter : BasePlayerPresenter, IInitializable
 {
-    private IPlayerModel _playerModel;
-    private IPlayerView _playerView;
+    private IModel _playerModel;    
     private PlayerInputAction _control;    
 
-    public PlayerPresenter(IPlayerView view, IPlayerModel model, PlayerInputAction control)
-    {
-        _playerView = view;
+    public PlayerPresenter(IPlayerView view, IModel model, PlayerInputAction control) : base(view)
+    {        
         _playerModel = model;
         _control = control;             
-    }
 
-    [Inject]
+        Initialize();
+    }
+    
     public void Initialize()
     {
         _control = new PlayerInputAction();
@@ -26,31 +25,32 @@ public class PlayerPresenter : IPlayerPresenter, IInitializable
         _control.PlayerControl.Move.canceled += OnMoveCancelled;
         _control.PlayerControl.Jump.started += OnJump;        
 
-        _playerView.OnEnableEvent += OnEnable;
-        _playerView.OnDisableEvent += OnDisable;
+        View.OnEnabledEvent += EnableControl;
+        View.OnDisabledEvent += DisableControl;
     }
 
-    public void OnMoveStarted(InputAction.CallbackContext context)
+    public override void OnMoveStarted(InputAction.CallbackContext context) 
     {        
         var direction = context.ReadValue<float>();
-        _playerView.MoveInDirectionX(direction);
+        View.MoveInDirectionX(direction);
     }
 
-    public void OnMoveCancelled(InputAction.CallbackContext context)
+    public override void OnMoveCancelled(InputAction.CallbackContext context)
     {        
-        _playerView.StopMove();        
+        View.StopMove();        
     }
 
-    public void OnJump(InputAction.CallbackContext context)
+    public override void OnJump(InputAction.CallbackContext context)
     {
-        _playerView.OnJump();
+        View.OnJump();
     }
 
-    private void OnEnable()
+    private void EnableControl()
     {
         _control.Enable();
     }
-    private void OnDisable()
+
+    private void DisableControl()
     {
         _control.Disable();
     }    

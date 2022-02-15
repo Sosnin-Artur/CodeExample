@@ -12,7 +12,7 @@ public class PlayerInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container.Bind<IPlayerView>().FromInstance(_playerView);
-        Container.Bind<IPlayerModel>().To<PlayerModel>().AsTransient();
+        Container.Bind<IModel>().To<PlayerModel>().AsTransient();
         Container.Bind<PlayerInputAction>().AsTransient();  
         
         Container.BindInterfacesAndSelfTo<PlayerPresenter>().AsTransient();

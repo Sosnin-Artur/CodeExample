@@ -1,10 +1,10 @@
 ﻿using System;
 
-public interface IPlayerView
+public interface IPlayerView : IView
 {
-    event Action OnEnableEvent;
-    event Action OnDisableEvent;
-
+    event Action OnEnabledEvent;
+    event Action OnDisabledEvent;
+        
     void MoveInDirectionX(float direction);
     
     void StopMove();    

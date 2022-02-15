@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PlayerView : MonoBehaviour, IPlayerView
 {            
-    public event Action OnEnableEvent;
-    public event Action OnDisableEvent;
+    public event Action OnEnabledEvent;
+    public event Action OnDisabledEvent;
 
     [SerializeField]
     [Tooltip("Curve for change movement initial speed")]
@@ -25,8 +25,8 @@ public class PlayerView : MonoBehaviour, IPlayerView
     private SpriteRenderer _sprite;
 
     private IEnumerator _moveCoroutine;
-    private float _directionX;    
-
+    private float _directionX;
+    
     public void MoveInDirectionX(float direction)
     {        
         _directionX = direction;
@@ -41,6 +41,7 @@ public class PlayerView : MonoBehaviour, IPlayerView
         StartCoroutine(_moveCoroutine);
 
     }
+
     public void StopMove()
     {
         StopCoroutine(_moveCoroutine);
@@ -48,7 +49,7 @@ public class PlayerView : MonoBehaviour, IPlayerView
     }
 
     public void OnJump()
-    {
+    {                    
         if (IsGrounded())
         {
             StartCoroutine(Jump());
@@ -63,7 +64,13 @@ public class PlayerView : MonoBehaviour, IPlayerView
     private void Awake()
     {                        
         _moveCoroutine = Move();        
-    }           
+    }
+
+    private void OnEnable()
+    {
+        OnEnabledEvent?.Invoke();
+
+    }
 
     private IEnumerator Move()
     {
@@ -96,16 +103,11 @@ public class PlayerView : MonoBehaviour, IPlayerView
             yield return wait;
         }
         while (!IsGrounded());       
-    }
-
-    private void OnEnable()
-    {
-        OnEnableEvent?.Invoke();
-    }
+    }   
 
     private void OnDisable()
     {
-        OnDisableEvent?.Invoke();
+        OnDisabledEvent?.Invoke();
     }
 }
 
