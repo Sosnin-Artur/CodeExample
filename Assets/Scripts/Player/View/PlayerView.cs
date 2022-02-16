@@ -23,10 +23,6 @@ public class PlayerView : MonoBehaviour, IPlayerView
     [SerializeField]
     [Tooltip("SpriteRenderer of current object")]
     private SpriteRenderer _sprite;
-    [SerializeField]
-    [Tooltip("View of health system of player")]
-    private HealthView _healthView;
-
 
     private IEnumerator _moveCoroutine;
     private float _directionX;
@@ -67,9 +63,8 @@ public class PlayerView : MonoBehaviour, IPlayerView
 
     private void Awake()
     {                        
-        _moveCoroutine = Move();      
-        _healthView.Presenter.OnDeathEvent += OnDeath;
-    }    
+        _moveCoroutine = Move();        
+    }
 
     private void OnEnable()
     {
@@ -108,13 +103,7 @@ public class PlayerView : MonoBehaviour, IPlayerView
             yield return wait;
         }
         while (!IsGrounded());       
-    }
-
-    private void OnDeath()
-    {
-        Debug.Log("Player: Death");
-
-    }
+    }   
 
     private void OnDisable()
     {
