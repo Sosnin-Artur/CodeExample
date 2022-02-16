@@ -32,6 +32,7 @@ public class PlayerView : MonoBehaviour, IPlayerView
         _directionX = direction;
         if (direction > 0)
         {
+ 
             _sprite.flipX = true;
         }
         else if (direction < 0)
