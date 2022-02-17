@@ -1,48 +1,62 @@
 using System;
+using System.Reactive.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
-public class HealthPresenter : BaseHealthPresenter, IInitializable
+public class HealthPresenter : BaseHealthPresenter
 {    
-    private HealthModel _healthModel;    
+    private IHealthModel _healthModel;        
+
+    public override IHealthModel Model
+    {
+        get
+        {
+            return _healthModel;
+        }
+    }
 
     public HealthPresenter(IHealthView view, IHealthModel model) : base(view)
-    {        
-        _healthModel = model as HealthModel;        
-        Initialize();
-    }
-
-    public void Initialize()
-    {
-        View.Presenter = this;
-    }
-
-    public override void InitModel(int currentHealth, int maxHealth)
-    {
-        _healthModel.CurrentHealth = currentHealth;
-        _healthModel.MaxHealth = maxHealth;
-    }
+    {                
+        InitModel(model);
+    }    
 
     public override void Heal(int value)
     {
-        _healthModel.CurrentHealth += value;
-
-        if (_healthModel.CurrentHealth > _healthModel.MaxHealth)
-        {
-            _healthModel.CurrentHealth = _healthModel.MaxHealth;
-        }
+        _healthModel.CurrentHealth.Value = 
+            Mathf.Min(_healthModel.CurrentHealth.Value + value, _healthModel.MaxHealth.Value);
+                
     }            
 
-    public override void TakeDamage(int value)
+    public override void ApplyDamage(int value)
     {
-        _healthModel.CurrentHealth -= value;
+        _healthModel.CurrentHealth.Value =
+            Mathf.Max(_healthModel.CurrentHealth.Value - value, 0); ;        
+    }        
 
-        if (_healthModel.CurrentHealth < 0)
+    public override void Dispose()
+    {
+        _healthModel.CurrentHealth.Dispose();
+        _healthModel.MaxHealth.Dispose();
+    }
+
+    private void InitModel(IHealthModel model)
+    {
+        _healthModel = model;
+        
+        _healthModel.CurrentHealth = new ReactiveProperty<int>(View.CurrentHealth);
+        _healthModel.MaxHealth = new ReactiveProperty<int>(View.MaxHealth);
+
+        _healthModel.CurrentHealth.Subscribe(x => View.SetHealth(x, _healthModel.MaxHealth.Value));
+        _healthModel.MaxHealth.Subscribe(x => View.SetHealth(_healthModel.CurrentHealth.Value, x));
+        _healthModel.CurrentHealth.Subscribe(x => CallDeath(x));        
+    }
+
+    private void CallDeath(int x)
+    {        
+        if (x <= 0)
         {
-            _healthModel.CurrentHealth = 0;
-            InvokeDeathEvent();
+            View.Die();
         }
-    }    
+    }
 }

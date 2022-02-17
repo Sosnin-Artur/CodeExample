@@ -1,3 +1,4 @@
-﻿public interface IPlayerModel : IModel
+﻿using MVP;
+public interface IPlayerModel : IModel
 {
 }
