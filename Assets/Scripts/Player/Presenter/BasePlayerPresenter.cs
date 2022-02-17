@@ -12,5 +12,5 @@ public abstract class BasePlayerPresenter : BasePresenter<IPlayerView>
 
     public abstract void OnJump(InputAction.CallbackContext context);    
 
-    public abstract void Die(int currentHealth);
+    public abstract void CallDeath(int currentHealth);
 }

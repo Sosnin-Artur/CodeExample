@@ -38,7 +38,7 @@ public class PlayerPresenter : BasePlayerPresenter
         View.OnJump();
     }
 
-    public override void Die(int currentHealth)
+    public override void CallDeath(int currentHealth)
     {        
         if (currentHealth <= 0)
         {
