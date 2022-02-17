@@ -1,4 +1,4 @@
-﻿public interface IGroundChecker
+﻿internal interface IGroundChecker
 {
     bool IsGrounded { get; }
 }

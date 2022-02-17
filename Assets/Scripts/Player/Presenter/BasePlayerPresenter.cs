@@ -1,5 +1,5 @@
 ﻿using UnityEngine.InputSystem;
-
+using MVP;
 public abstract class BasePlayerPresenter : BasePresenter<IPlayerView>
 {    
     public BasePlayerPresenter(IPlayerView view) : base(view)
@@ -11,4 +11,6 @@ public abstract class BasePlayerPresenter : BasePresenter<IPlayerView>
     public abstract void OnMoveCancelled(InputAction.CallbackContext context);    
 
     public abstract void OnJump(InputAction.CallbackContext context);    
+
+    public abstract void Die(int currentHealth);
 }

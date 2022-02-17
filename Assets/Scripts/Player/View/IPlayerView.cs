@@ -1,5 +1,5 @@
 ﻿using System;
-
+using MVP;
 public interface IPlayerView : IView
 {
     event Action OnEnabledEvent;
@@ -11,5 +11,6 @@ public interface IPlayerView : IView
 
     void OnJump();    
 
-    bool IsGrounded();   
+    bool IsGrounded();
+    void Die();
 }

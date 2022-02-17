@@ -1,19 +1,16 @@
 ﻿using System;
-
+using MVP;
 public abstract class BaseHealthPresenter : BasePresenter<IHealthView>
-{
-    public event Action OnDeathEvent;
+{    
+    public abstract IHealthModel Model
+    {
+        get;
+    }
 
     public BaseHealthPresenter(IHealthView view) : base(view)
     {
     }
-    
-    public abstract void InitModel(int currentHealth, int maxHealth);
+        
     public abstract void Heal(int value);
-    public abstract void TakeDamage(int value);
-
-    protected void InvokeDeathEvent()
-    {
-        OnDeathEvent?.Invoke();
-    }
+    public abstract void ApplyDamage(int value);    
 }

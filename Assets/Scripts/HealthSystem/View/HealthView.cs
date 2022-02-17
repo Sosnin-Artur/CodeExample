@@ -4,46 +4,40 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthView : MonoBehaviour, IHealthView
-{
+{    
     [SerializeField]
-    private int _currentHealth = 50;
+    private int _currentHealth;
     [SerializeField]
-    private int _maxHealth = 100;    
-    private BaseHealthPresenter _presenter;
-        
-    public BaseHealthPresenter Presenter 
-    { 
+    private int _maxHealth;   
+
+    public int CurrentHealth
+    {
         get
         {
-            return _presenter;
-        }
-        set
-        {            
-            if (_presenter == null)
-            {                
-                _presenter = value;
-            }
+            return _currentHealth;
         }
     }
-    
-    public void Heal(int value)
+
+    public int MaxHealth
     {
-        _presenter.Heal(value);
+        get
+        {
+            return _maxHealth;
+        }
     }
 
-    public void TakeDamage(int value)
+    public void SetHealth(int value, int maxValue)
     {
-        _presenter.TakeDamage(value);
+        // TODO : add healthbar.
     }
 
-    private void Start()
+    public void Die()
     {
-        _presenter.InitModel(_currentHealth, _maxHealth);
-        _presenter.OnDeathEvent += OnDeath;
+        Debug.Log("Health: Death");        
     }
 
-    private void OnDeath()
-    {
-        Debug.Log("Health: Death");
-    }
+    private void Awake()
+    {                
+        SetHealth(CurrentHealth, MaxHealth);
+    }    
 }

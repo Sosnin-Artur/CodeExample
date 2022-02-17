@@ -23,6 +23,10 @@ public class PlayerView : MonoBehaviour, IPlayerView
     [SerializeField]
     [Tooltip("SpriteRenderer of current object")]
     private SpriteRenderer _sprite;
+    [SerializeField]
+    [Tooltip("View of health system of player")]
+    private HealthView _healthView;
+
 
     private IEnumerator _moveCoroutine;
     private float _directionX;
@@ -32,7 +36,6 @@ public class PlayerView : MonoBehaviour, IPlayerView
         _directionX = direction;
         if (direction > 0)
         {
- 
             _sprite.flipX = true;
         }
         else if (direction < 0)
@@ -62,10 +65,16 @@ public class PlayerView : MonoBehaviour, IPlayerView
         return _groundChecker.IsGrounded;
     }
 
+    public void Die()
+    {
+        Debug.Log("Player: Death");
+    }
+
     private void Awake()
     {                        
-        _moveCoroutine = Move();        
-    }
+        _moveCoroutine = Move();      
+        //_healthView.Presenter.OnDeathEvent += OnDeath;
+    }    
 
     private void OnEnable()
     {
@@ -104,11 +113,11 @@ public class PlayerView : MonoBehaviour, IPlayerView
             yield return wait;
         }
         while (!IsGrounded());       
-    }   
+    }    
 
     private void OnDisable()
     {
         OnDisabledEvent?.Invoke();
-    }
+    }    
 }
 

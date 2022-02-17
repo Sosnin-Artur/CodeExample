@@ -1,3 +1,6 @@
-﻿public interface IView
-{    
+﻿namespace MVP
+{
+    public interface IView
+    {
+    }
 }
