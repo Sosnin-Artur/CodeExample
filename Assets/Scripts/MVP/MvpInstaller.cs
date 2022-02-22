@@ -10,17 +10,36 @@ using Zenject;
 namespace MVP
 {
     public class MvpInstaller : MonoInstaller
-    {
-        protected void CreateMvp<M, V, P>(V view)             
-            where M : class, IModel 
+    {                
+        protected void CreateMvp<V, P>(V view, params object[] par)                         
             where V : IView
             where P : BasePresenter<V>      
         {
-            Container.BindInterfacesTo<M>().AsSingle();
-            Container.Bind<V>().FromInstance(view);            
-            Container.BindInterfacesAndSelfTo<P>().AsSingle();                       
+            Container.Instantiate<P>(GetParamsFor<P>(view, par));            
+            
         }        
-    }
+
+        private IEnumerable<object> GetParamsFor<P>(IView view, params object[] startedParams)
+        {            
+            var res = new List<object>(startedParams);
+            
+            foreach (var obj in Container.GetDependencyContracts<P>())
+            {
+                var item = Array.Find<object>(startedParams, o => obj.IsAssignableFrom(o as Type));
+                if (item != null)
+                {
+                    if (!Container.HasBinding(obj))
+                    {                                           
+                        Container.Bind(obj).To(item as Type).AsSingle();                        
+                    }                    
+                    res.Remove(item);                    
+                }                    
+            }            
+            
+            res.Add(view);                       
+            return res;
+        }
+    }    
 }
 
 
