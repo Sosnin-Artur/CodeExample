@@ -71,6 +71,7 @@ public class Mover : MonoBehaviour, IMover
         while (true)
         {
             yield return wait;
+
             _rb.velocity = new Vector2(
                     _directionX * _speedCurve.Evaluate(moveTimeElapsed),
                     _rb.velocity.y
@@ -91,6 +92,7 @@ public class Mover : MonoBehaviour, IMover
                     _jumpCurve.Evaluate(jumpTimeElapsed)
                     );
             jumpTimeElapsed += Time.fixedDeltaTime;
+
             yield return wait;
         }
         while (!IsGrounded());

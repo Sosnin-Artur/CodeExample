@@ -21,7 +21,7 @@ namespace MVP
 
         private IEnumerable<object> GetParamsFor<P>(IView view, params object[] startedParams)
         {            
-            var res = new List<object>(startedParams);
+            var resultParams = new List<object>(startedParams);
             
             foreach (var obj in Container.GetDependencyContracts<P>())
             {
@@ -30,14 +30,18 @@ namespace MVP
                 {
                     if (!Container.HasBinding(obj))
                     {                                           
-                        Container.Bind(obj).To(item as Type).AsSingle();                        
+                        Container
+                            .Bind(obj)
+                            .To(item as Type)
+                            .AsSingle();                        
                     }                    
-                    res.Remove(item);                    
+                    resultParams.Remove(item);                    
                 }                    
             }            
             
-            res.Add(view);                       
-            return res;
+            resultParams.Add(view);    
+            
+            return resultParams;
         }
     }    
 }

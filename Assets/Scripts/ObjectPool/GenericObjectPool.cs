@@ -30,6 +30,7 @@ public abstract class GenericObjectPool<T> : MonoBehaviour where T : Component
     {        
         var obj = pooledObjects.Dequeue();;
         obj.gameObject.SetActive(true);
+
         return obj;
     }
     
