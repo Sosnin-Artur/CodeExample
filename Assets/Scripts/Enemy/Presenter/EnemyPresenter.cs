@@ -5,95 +5,67 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class EnemyPresenter : BaseEnemyPresenter
+public class EnemyPresenter : BaseEnemyPresenter, ITickable
 {
-    private IEnemyModel _enemyModel;
-    private IEnemyState _currentStateHandler;
-    private EnemyStates _currentState = EnemyStates.None;
-    
-    private List<IEnemyState> _states;
-    
-    private EnemyFollowState _followState;
-
-    public EnemyPresenter(IEnemyView view, IEnemyModel model, IHealthModel healthModel) : base(view)
-    {
-        _enemyModel = model;
-        healthModel.CurrentHealth.Subscribe(x => CallDeath(x));
-
-        View.OnSetTargetEvent += Follow;
-        View.OnAtackEvent += Attack;
-        View.OnStayEvent += Idle;
-        View.OnUpdateEvent += Tick;
+    private readonly IEnemyModel _enemyModel;
+    private readonly IEnemyStateMachine _stateMachine;
         
-        InitStates(view);
-    }    
+    private readonly LazyInject<EnemyPool> _pool;
+
+    public EnemyPresenter
+        (IEnemyView view
+        , IEnemyModel model
+        , IHealthModel healthModel
+        //, IEnemyStateMachine stateMachine        
+        , LazyInject<EnemyPool> pool
+        ) : base(view)
+    {                
+        _enemyModel = model;
+
+        //healthModel.CurrentHealth.Subscribe(x => CallDeath(x));
+
+        _stateMachine = new EnemyStateMachine(view);
+        
+        _pool = pool;
+        
+        InitViewEvents();        
+    }        
 
     public override void CallDeath(int currentHealth)
     {
         if (currentHealth < 0)
         {
-            View.Die();
+            _pool.Value.Release(this);
+            View.Die();            
         }
     }            
-
-    public void ChangeState(EnemyStates state)
-    {
-        if (_currentState == state)
-        {
-            return;
-        }
-
-        _currentState = state;
-
-        if (_currentStateHandler != null)
-        {
-            _currentStateHandler.ExitState();
-            _currentStateHandler = null;
-        }
-
-        _currentStateHandler = _states[(int)state];
-        _currentStateHandler.EnterState();        
-    }
-
-    public void Tick()
-    {        
-        _currentStateHandler.Update();        
-    }
-
+   
     public override void Dispose()
     {        
-    }    
-
-    private void InitStates(IEnemyView view)
+        View.OnAtackEvent -= _stateMachine.Attack;        
+        View.OnUpdateEvent -= Tick;
+    }
+    
+    public void Tick()
     {
-        var idle = new EnemyIdleState(view);
-        var attack = new EnemyAttackState(view);        
-        var follow = new EnemyFollowState(view, View.Target);
+        _stateMachine.Tick();
         
-        _followState = follow;
-        
-        _states = new List<IEnemyState>
+        if (View.Target != null 
+            && Vector3.Distance(
+                View.Transform.position
+                , View.Target.position) < View.FollowDistance)
         {
-            idle, attack, follow
-        };
-        
-        ChangeState(EnemyStates.Idle);
+            _stateMachine.Follow(View.Target);
+        }
+        else
+        {
+            _stateMachine.Idle();
+        }
     }
 
-    private void Attack()
+    private void InitViewEvents()
     {        
-        Debug.Log("attack");
-        ChangeState(EnemyStates.Attack);
-    }
-
-    private void Follow(Transform target)
-    {        
-        _followState._target = target;
-        ChangeState(EnemyStates.Follow);        
-    }
-
-    private void Idle()
-    {
-        ChangeState(EnemyStates.Idle);
-    }        
+        View.OnAtackEvent += _stateMachine.Attack;        
+        View.OnUpdateEvent += Tick;
+    }    
 }
