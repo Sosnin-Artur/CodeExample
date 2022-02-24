@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyAttackState : IEnemyState
 {        
-    private IEnemyView _view;                       
+    private readonly IEnemyView _view;                       
 
     public EnemyAttackState(IEnemyView view)
     {

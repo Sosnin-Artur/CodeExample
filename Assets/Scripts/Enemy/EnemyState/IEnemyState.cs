@@ -1,15 +1,6 @@
-﻿public interface IEnemyState
+﻿public interface IEnemyState : IState
 {    
-    void EnterState();    
-    void Update();        
+    void EnterState();              
     void ExitState();
-}
-
-public enum EnemyStates
-{
-    Idle,
-    Attack,
-    Follow,
-    None
 }
 

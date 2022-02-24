@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyIdleState : IEnemyState
 {        
-    private IEnemyView _view;        
+    private readonly IEnemyView _view;        
 
     public EnemyIdleState(IEnemyView view)
     {        
