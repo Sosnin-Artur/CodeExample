@@ -20,43 +20,38 @@ public class EnemyView : MonoBehaviour, IEnemyView
     [SerializeField]
     private LayerMask _attackMask;
 
-    private Transform _transform;
+    private Transform _transform;        
+
     public Mover Mover => _mover;    
-
-    public Transform Transform => _transform;    
-
-    public Transform Target => _target;
-
-    public GenericObjectPool<EnemyView> Pool { get; set; }
-
-    public void SetTarget(Transform target)
+    public Transform Transform => _transform;
+    public GameObject GameObject => gameObject;
+    public float FollowDistance => _followDistance;    
+    
+    public Transform Target
     {
-        OnSetTargetEvent?.Invoke(target);
-    }
+        get
+        {
+            return _target;
+        }
+        set
+        {
+            _target = value;
+        }
+    }    
 
     public void Die()
     {
-        Debug.Log("Enemy: Die");
-        Pool.Release(this);
+        Debug.Log("Enemy: Die");                
     }
 
     private void Awake()
-    {
-        _transform = transform;
+    {        
+        _transform = transform;                
     }
 
     private void Update()
     {        
-        OnUpdateEvent?.Invoke();
-
-        if (Vector3.Distance(Transform.position, Target.position) < _followDistance)
-        {
-            SetTarget(Target);
-        }
-        else
-        {
-            Stay();
-        }
+        OnUpdateEvent?.Invoke();                
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -75,10 +70,5 @@ public class EnemyView : MonoBehaviour, IEnemyView
     private void Atack()
     {
         OnAtackEvent?.Invoke();
-    }
-
-    private void Stay()
-    {
-        OnStayEvent?.Invoke();
     }    
 }

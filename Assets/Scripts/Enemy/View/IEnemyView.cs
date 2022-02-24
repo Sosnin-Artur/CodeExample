@@ -9,11 +9,11 @@ public interface IEnemyView : IView
     event Action OnStayEvent;
     event Action OnUpdateEvent;
 
-    Mover Mover { get; }
+    Mover Mover { get; }    
     Transform Transform { get; }    
-    Transform Target { get; }
-
-    void SetTarget(Transform target);
+    Transform Target { get; set; }
+    public GameObject GameObject { get; }
+    float FollowDistance { get; }  
+    
     void Die();
-
 }
