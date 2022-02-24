@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-class EnemyModel : IEnemyModel
+public class EnemyModel : IEnemyModel
 {    
 }
 

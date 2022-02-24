@@ -1,16 +1,16 @@
 ﻿
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public abstract class GenericObjectPool<T, TFactory> where TFactory : IFactory
 {        
     protected readonly Queue<T> PooledObjects = new Queue<T>();    
     
-    private IFactory<T> _factory;
+    private readonly IFactory<T> _factory;
 
     public GenericObjectPool(IFactory<T> factory, int count)
-    {        
-        Debug.Log("pool");
+    {                
         _factory = factory;
         AddObjects(count);
     }

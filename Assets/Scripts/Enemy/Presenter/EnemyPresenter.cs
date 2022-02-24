@@ -16,16 +16,15 @@ public class EnemyPresenter : BaseEnemyPresenter, ITickable
         (IEnemyView view
         , IEnemyModel model
         , IHealthModel healthModel
-        //, IEnemyStateMachine stateMachine        
+        , IEnemyStateMachine stateMachine        
         , LazyInject<EnemyPool> pool
         ) : base(view)
     {                
         _enemyModel = model;
-
-        //healthModel.CurrentHealth.Subscribe(x => CallDeath(x));
-
-        _stateMachine = new EnemyStateMachine(view);
         
+        healthModel.CurrentHealth.Subscribe(x => CallDeath(x));
+       
+        _stateMachine = stateMachine;
         _pool = pool;
         
         InitViewEvents();        

@@ -27,27 +27,6 @@ public class GameInstaller : MonoInstaller
             .Bind<EnemyPool>()
             .AsSingle();
 
-        Container
-            .Bind<IEnemyView>()
-            .To<EnemyView>()
-            .FromComponentsInNewPrefab(_enemyPrefab)
-            .UnderTransform(this.transform)
-            .AsTransient();
-        
-        Container
-            .BindInterfacesAndSelfTo<EnemyModel>()
-            .AsTransient();
-
-        Container
-            .BindInterfacesAndSelfTo<HealthModel>()
-            .AsTransient()
-            .WhenInjectedInto<EnemyPresenter>();        
-
-        Container
-            .Bind<BaseEnemyPresenter>()            
-            .To<EnemyPresenter>()            
-            //.FromSubContainerResolve()            
-            //.ByInstaller<EnemyInstaller>()            
-            .AsTransient();              
-    }    
+        Container.BindInstance<GameObject>(_enemyPrefab).AsSingle();        
+    }        
 }
