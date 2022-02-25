@@ -24,9 +24,12 @@ public class GameInstaller : MonoInstaller
             .AsSingle();        
         
         Container
-            .Bind<EnemyPool>()
+            .Bind<GenericObjectPool<BaseEnemyPresenter, IEnemyFactory>>()
+            .To<EnemyPool>()
             .AsSingle();
 
-        Container.BindInstance<GameObject>(_enemyPrefab).AsSingle();        
+        Container
+            .BindInstance<GameObject>(_enemyPrefab)
+            .AsSingle();        
     }        
 }

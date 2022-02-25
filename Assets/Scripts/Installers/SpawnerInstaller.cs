@@ -4,13 +4,19 @@ using UnityEngine;
 using Zenject;
 using MVP;
 
-public class SpawnerInstaller : MvpInstaller
+public class SpawnerInstaller : MonoInstaller
 {
     [SerializeField]
-    private SpawnerView _view;
+    private GameObject _view;
 
     public override void InstallBindings()
     {        
-        CreateMvp<ISpawnerView, SpawnerPresenter>(_view, typeof(EnemyPool));
+        var subContainer = Container.CreateSubContainer();
+        var factory = new PresenterFactory<ISpawnerView, SpawnerPresenter>(subContainer);
+        
+        factory.BindParamsAndCreate(
+            _view, 
+            typeof(SpawnerView), 
+            typeof(EnemyPool));
     }    
 }

@@ -8,7 +8,7 @@ public interface IEnemyView : IView
     event Action OnAtackEvent;
     event Action OnStayEvent;
     event Action OnUpdateEvent;
-
+    
     Mover Mover { get; }    
     Transform Transform { get; }    
     Transform Target { get; set; }

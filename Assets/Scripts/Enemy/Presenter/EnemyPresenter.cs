@@ -13,12 +13,11 @@ public class EnemyPresenter : BaseEnemyPresenter, ITickable
     private readonly LazyInject<EnemyPool> _pool;
 
     public EnemyPresenter
-        (IEnemyView view
-        , IEnemyModel model
-        , IHealthModel healthModel
-        , IEnemyStateMachine stateMachine        
-        , LazyInject<EnemyPool> pool
-        ) : base(view)
+        (IEnemyView view, 
+        IEnemyModel model, 
+        IHealthModel healthModel, 
+        IEnemyStateMachine stateMachine, 
+        LazyInject<EnemyPool> pool) : base(view)
     {                
         _enemyModel = model;
         

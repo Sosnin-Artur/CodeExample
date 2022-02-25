@@ -9,7 +9,7 @@ class SpawnerPresenter : BaseSpawnerPresenter
     public SpawnerPresenter(
         ISpawnerView view, 
         GenericObjectPool<BaseEnemyPresenter, IEnemyFactory> pool) : base(view)
-    {        
+    {                
         _pool = pool;
 
         View.OnEnemyCreatingEvent += CreateEnemy;

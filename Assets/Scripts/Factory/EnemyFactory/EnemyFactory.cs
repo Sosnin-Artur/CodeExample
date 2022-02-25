@@ -5,16 +5,14 @@ using UnityEngine;
 using Zenject;
 
 class EnemyFactory : IEnemyFactory
-{    
-    private readonly DiContainer _container;    
+{        
     private readonly GameObject _prefab;
     
     private readonly IPresenterFactory<IEnemyView, EnemyPresenter> _enemyFactory;
     private readonly IPresenterFactory<IHealthView, HealthPresenter> _healthFactory;
 
     public EnemyFactory(GameObject prefab, DiContainer container)
-    {        
-        _container = container;          
+    {                          
         _prefab = prefab;
 
         var subContainer = container.CreateSubContainer();
@@ -23,14 +21,23 @@ class EnemyFactory : IEnemyFactory
     }
 
     public BaseEnemyPresenter Create()
-    {                
+    {                       
         var enemy = GameObject.Instantiate(_prefab);        
         
-        _healthFactory.BindParamsAndCreate(enemy, typeof(HealthView), typeof(HealthModel));
-        var res = _enemyFactory.BindParamsAndCreate(enemy, typeof(EnemyView), typeof(EnemyModel), typeof(EnemyStateMachine));
+        _healthFactory.BindParamsAndCreate(
+            enemy, 
+            typeof(HealthView), 
+            typeof(HealthModel));
+        
+        var res = _enemyFactory.BindParamsAndCreate(
+            enemy, 
+            typeof(EnemyView), 
+            typeof(EnemyModel), 
+            typeof(EnemyStateMachine));
 
         _healthFactory.UnbindPresenter();
         _enemyFactory.UnbindPresenter();        
+        
         return res;
     }   
 }

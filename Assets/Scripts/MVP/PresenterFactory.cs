@@ -18,6 +18,7 @@ namespace MVP
         public P BindParamsAndCreate(GameObject gameObject, params object[] startedParams)
         {
             BindPresenterParams(gameObject, startedParams);
+
             return Create();
         }        
 
@@ -31,7 +32,11 @@ namespace MVP
                 {                    
                     if (typeof(V).IsAssignableFrom(item as Type))
                     {                        
-                        _container.Bind<V>().To(item as Type).FromComponentOn(gameObject).AsCached();
+                        _container
+                            .Bind<V>()
+                            .To(item as Type)
+                            .FromComponentOn(gameObject)
+                            .AsCached();
                     }
                     else if (!_container.HasBinding(obj))
                     {
