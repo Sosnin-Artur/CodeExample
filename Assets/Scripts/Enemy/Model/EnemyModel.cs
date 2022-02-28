@@ -2,6 +2,7 @@
 using UnityEngine;
 
 public class EnemyModel : IEnemyModel
-{    
+{
+    public ReactiveProperty<Transform> Target { get; set; }        
 }
 

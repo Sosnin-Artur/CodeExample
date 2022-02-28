@@ -3,24 +3,25 @@ using UnityEngine;
 
 public class EnemyFollowState : IEnemyState
 {    
-    private readonly IEnemyView _view;        
-    
-    public Transform Target { get; set; }   
+    private readonly IEnemyView _view;                   
 
-    public EnemyFollowState(IEnemyView view, Transform target)
+    private Transform _target;
+
+    public EnemyFollowState(IEnemyView view, IEnemyModel model)
     {
         _view = view;
-        Target = target;
+        _target = view.Target;
+        
+        model.Target.Subscribe(x => _target = x);
     }
     
-
     public void EnterState()
-    {                
-    }    
+    {        
+    }
 
     public void Update()
     {
-        var targetPostion = Target.position;
+        var targetPostion = _target.position;
         var currentPosition = _view.Transform.position;
 
         var direction = targetPostion - currentPosition;
