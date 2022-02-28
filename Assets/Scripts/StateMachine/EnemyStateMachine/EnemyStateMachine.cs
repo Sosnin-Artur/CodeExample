@@ -1,75 +1,48 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStateMachine : IEnemyStateMachine
-{
-    private IEnemyState _currentStateHandler;    
+public class EnemyStateMachine : BaseEnemyStateMachine
+{   
+    private readonly IEnemyView _view;
+    private readonly IEnemyModel _model;
 
-    private List<IEnemyState> _states;
-
-    private EnemyFollowState _followState;
-
-    private IEnemyView _view;
-
-    public EnemyStateMachine(IEnemyView view)
-    {
+    public EnemyStateMachine(IEnemyView view, IEnemyModel model)        
+    {        
         _view = view;
-
-        InitStates(view);
+        _model = model;
     }
 
-    public void Tick()
+    public override void Tick()
     {
-        _currentStateHandler.Update();
+        CurrentStateHandler.Update();
+
+        if (Vector2.Distance(
+            _view.Transform.position,
+            _model.Target.Value.position) < _view.FollowDistance)
+        {
+            ChangeEnemyState(EnemyStates.Follow);
+        }
+        else
+        {
+            ChangeEnemyState(EnemyStates.Idle);
+        }
     }
 
-    public void Attack()
+    public override void ChangeState(IEnemyState state)
     {
-        Debug.Log("attack");
-        ChangeState(_states[(int)EnemyStates.Attack]);
-    }
-
-    public void Follow(Transform target)
-    {
-        _followState.Target = target;
-        ChangeState(_states[(int)EnemyStates.Follow]);
-    }
-
-    public void Idle()
-    {
-        ChangeState(_states[(int)EnemyStates.Idle]);
-    }
-
-    public void ChangeState(IEnemyState state)
-    {
-        if (_currentStateHandler == state)
+        if (CurrentStateHandler == state)
         {
             return;
-        }        
-
-        if (_currentStateHandler != null)
-        {
-            _currentStateHandler.ExitState();
-            _currentStateHandler = null;
         }
 
-        _currentStateHandler = state;
-        _currentStateHandler.EnterState();
-    }
-
-    private void InitStates(IEnemyView view)
-    {
-        var idle = new EnemyIdleState(view);
-        var attack = new EnemyAttackState(view);
-        var follow = new EnemyFollowState(view, _view.Target);
-
-        _followState = follow;
-
-        _states = new List<IEnemyState>
+        if (CurrentStateHandler != null)
         {
-            idle, attack, follow
-        };
+            CurrentStateHandler.ExitState();
+            CurrentStateHandler = null;
+        }
 
-        ChangeState(_states[(int)EnemyStates.Idle]);
-    }
+        CurrentStateHandler = state;
+        CurrentStateHandler.EnterState();
+    }    
 }
