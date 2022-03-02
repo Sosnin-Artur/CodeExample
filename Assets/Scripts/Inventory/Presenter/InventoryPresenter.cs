@@ -4,37 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryPresenter : BaseInventoryPresenter
-{            
-    private readonly IInventoryModel _model;
+{                   
     private readonly InventoryCellPool _pool;
-    
+
+    private IInventoryModel _model;
     private List<BasePoolableInventoryCell> _cells;
 
     public InventoryPresenter(IInventoryView view, IInventoryModel model, InventoryCellPool pool) : base(view)
     {
-        _model = model;
-        _model.ItemToAdd = new ReactiveProperty<BaseGroundItem>(null);
-        _model.ItemToAdd.Subscribe(x => AddItem(x));
-        
+        InitModel(view, model);
+
+        _cells = new List<BasePoolableInventoryCell>();
+
         InitViewEvents();
 
         _pool = pool;
-
-        model.Items = new BaseItemObject[view.InventorySize];        
-
-        _cells = new List<BasePoolableInventoryCell>();
-    }
-
-    private void AddItem(BaseGroundItem item)
-    {        
-        if (_cells.Count < View.InventorySize)
-        {            
-            _model.Items.SetValue(item.Item, _cells.Count);
-            _cells.Add(_pool.Get());
-            Render(_model.Items);
-            
-            GameObject.Destroy(item.gameObject);
-        }             
     }
 
     public void OnEnable()
@@ -69,11 +53,31 @@ public class InventoryPresenter : BaseInventoryPresenter
         View.OnDisabledEvent -= OnDisable;
     }
 
+    private void InitModel(IInventoryView view, IInventoryModel model)
+    {
+        _model = model;
+        _model.ItemToAdd = new ReactiveProperty<BaseGroundItem>(null);
+        _model.ItemToAdd.Subscribe(x => AddItem(x));
+        _model.Items = new BaseItemObject[view.InventorySize];
+    }
+
     private void InitViewEvents()
     {
         View.OnEnabledEvent += OnEnable;
         View.OnDisabledEvent += OnDisable;
-    }    
+    }
+
+    private void AddItem(BaseGroundItem item)
+    {
+        if (_cells.Count < View.InventorySize)
+        {
+            _model.Items.SetValue(item.Item, _cells.Count);
+            _cells.Add(_pool.Get());
+            Render(_model.Items);
+
+            GameObject.Destroy(item.gameObject);
+        }
+    }
 
     private void ReleaseItems()
     {
