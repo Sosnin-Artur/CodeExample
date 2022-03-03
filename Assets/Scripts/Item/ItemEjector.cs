@@ -17,14 +17,15 @@ public class ItemEjector : MonoBehaviour
         _pool = pool;
     }
 
-    public void EjectFromPool(BaseItemObject item, Vector3 direction)
-    {        
-                      
-        var presenter = _pool.Get();
-        presenter.Item = item;
+    public void EjectFromPool(BaseItemObject item, Vector3 position)
+    {                                      
+        var direction = (position - transform.position).normalized;
+
+        var groundItem = _pool.Get();
+        groundItem.Item = item;
         
         var target = transform.position + (direction.normalized * _range);
-        
-        presenter.transform.position = target;
+
+        groundItem.transform.position = target;
     }
 }
