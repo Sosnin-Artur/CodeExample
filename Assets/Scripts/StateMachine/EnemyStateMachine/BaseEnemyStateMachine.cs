@@ -7,11 +7,11 @@ public abstract class BaseEnemyStateMachine : BaseStateMachine<IEnemyState>
     {                
     }
     
-    public virtual void InitStates(IEnemyView view, IEnemyModel model)
+    public virtual void InitStates(IEnemyView view)
     {
         var idle = new EnemyIdleState(view);
         var attack = new EnemyAttackState(view);
-        var follow = new EnemyFollowState(view, model);
+        var follow = new EnemyFollowState(view, view.HeigthEpsilon);
 
         States = new List<IEnemyState>
         {
@@ -21,13 +21,44 @@ public abstract class BaseEnemyStateMachine : BaseStateMachine<IEnemyState>
         ChangeState(idle);
     }
 
-    public void ChangeEnemyState(EnemyStates state)
+    public virtual void EnterState(IEnemyState state)
     {
-        ChangeState(States[(int)state]);
+        CurrentStateHandler = state;
+        CurrentStateHandler.EnterState();
     }
 
-    public void ChangeEnemyState(int state)
+    public void ChangeState(EnemyStates newState)
     {
-        ChangeState(States[state]);
+        foreach (var state in States)
+        {
+            if (newState == state.StateType)
+            {
+                ChangeState(state);
+                break;
+            }
+        }
+    }
+
+    public override bool ChangeState(IEnemyState state)
+    {        
+        if (!base.ChangeState(state))
+        {
+            return false;
+        }
+
+        if (CurrentStateHandler != null)
+        {
+            ExitState();
+        }
+
+        EnterState(state);
+
+        return true;
     }    
+
+    public void ExitState()
+    {
+        CurrentStateHandler.ExitState();
+        CurrentStateHandler = null;
+    }
 }

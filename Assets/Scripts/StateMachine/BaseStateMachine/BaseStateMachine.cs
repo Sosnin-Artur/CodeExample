@@ -1,11 +1,23 @@
 ﻿using System.Collections.Generic;
 
-public abstract class BaseStateMachine<T> where T : IState
+public abstract class BaseStateMachine<T> where T : class, IState
 {
     protected T CurrentStateHandler;
     protected List<T> States;
     
-    public abstract void Tick();
+    public virtual void Tick()
+    {
+        CurrentStateHandler.Update();
+    }
     
-    public abstract void ChangeState(T state);    
+    public virtual bool ChangeState(T state)
+    {
+        if (state == CurrentStateHandler)
+        {            
+            return false;
+        }
+
+        return true;
+    }
+
 }

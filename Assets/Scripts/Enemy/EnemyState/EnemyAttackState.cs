@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class EnemyAttackState : IEnemyState
 {        
-    private readonly IEnemyView _view;                       
+    private readonly IEnemyView _view;
+
+    public EnemyStates StateType => EnemyStates.Attack;
 
     public EnemyAttackState(IEnemyView view)
     {
