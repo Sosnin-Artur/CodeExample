@@ -1,6 +1,7 @@
 ﻿public enum ItemType
 {
     Food,
-    Equipment,
+    Armor,
+    Weapon,
     Default
 }

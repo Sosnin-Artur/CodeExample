@@ -4,9 +4,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public abstract class BaseInventoryCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public abstract class BaseInventoryCell : 
+    MonoBehaviour, 
+    IBeginDragHandler, 
+    IDragHandler, 
+    IEndDragHandler,
+    IPointerClickHandler
 {
-    public event Action EjectingEvent;
+    public event Action<BaseInventoryCell, BaseItemObject, Vector2> OnEjectingEvent;
+    public event Action<BaseItemObject> OnEquipingEvent;
 
     [SerializeField]
     private Text _nameField;
@@ -16,11 +22,9 @@ public abstract class BaseInventoryCell : MonoBehaviour, IBeginDragHandler, IDra
     private Transform _draggingParent;
     private Transform _originalParent;
 
-    public virtual void Init(Transform draggingParent)
-    {        
-        _draggingParent = draggingParent;
-        _originalParent = transform.parent;
-    }
+    private BaseItemObject _item;
+
+    public BaseItemObject Item => _item;   
 
     public virtual void Init(Transform draggingParent, Transform parent)
     {
@@ -29,11 +33,18 @@ public abstract class BaseInventoryCell : MonoBehaviour, IBeginDragHandler, IDra
         _originalParent = transform.parent;
     }
 
-    public virtual void Render(BaseItemObject item)
+    public virtual void Init(Transform draggingParent)
     {
-        _nameField.text = item.Name;
-        _icon.sprite = item.UiDisplay;        
+        _draggingParent = draggingParent;
+        _originalParent = transform.parent;
     }
+
+    public virtual void Render(BaseItemObject item)
+    {        
+        _item = item;        
+        _nameField.text = item.ItemData.Name;
+        _icon.sprite = item.UiDisplay;        
+    }    
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
@@ -46,14 +57,39 @@ public abstract class BaseInventoryCell : MonoBehaviour, IBeginDragHandler, IDra
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
-    {
-        if (In((RectTransform)_originalParent))
+    {        
+        var hoveredCount = eventData.hovered.Count;
+        
+        if (hoveredCount > 0)
         {
-            InsertInGrid();
-        }
+            var comp = eventData.hovered[hoveredCount - 1].GetComponentInChildren<InventoryView>();
+
+            if (In((RectTransform)_originalParent))
+            {
+                InsertInGrid();
+            }
+            else if (comp != null)
+            {
+                comp.AddItem(_item);
+            }
+            else
+            {
+                OnEjectingEvent?.Invoke(this, _item, eventData.position);
+            }
+        }                               
         else
+        {                        
+            OnEjectingEvent?.Invoke(this, _item, eventData.position);            
+        }        
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {               
+        var comp = eventData.hovered[eventData.hovered.Count - 1];
+        
+        if (comp != null)
         {            
-            EjectingEvent?.Invoke();
+            OnEquipingEvent?.Invoke(_item);            
         }
     }
 
@@ -77,5 +113,5 @@ public abstract class BaseInventoryCell : MonoBehaviour, IBeginDragHandler, IDra
 
         transform.SetParent(_originalParent);
         transform.SetSiblingIndex(closesIndex);
-    }
+    }    
 }

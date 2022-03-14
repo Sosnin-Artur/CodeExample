@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Default Object", menuName = "Inventory System/Items/Default")]
-public class DefaultObject : BaseItemObject
+[CreateAssetMenu(fileName = "New Food Object", menuName = "Inventory System/Items/Food")]
+public class FoodObject : BaseItemObject
 {
     public void Awake()
-    {        
-        ItemData.ItemType = ItemType.Default;
+    {
+        ItemData.ItemType = ItemType.Food;
     }
 
     public override BaseItem Equip(Transform parent)
