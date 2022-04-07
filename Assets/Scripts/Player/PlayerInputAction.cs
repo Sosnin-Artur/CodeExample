@@ -53,6 +53,24 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac6a1442-1a82-4455-8bc1-c20d0eba58fd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""cc1e1254-53e5-4e03-9e3a-f61f1e61a923"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -110,6 +128,28 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a15025db-e224-4bd8-9492-aecfa521a573"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6ae81794-5313-43d4-9349-a7d7357ac5dd"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -138,6 +178,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         m_PlayerControl_Attack = m_PlayerControl.FindAction("Attack", throwIfNotFound: true);
         m_PlayerControl_Move = m_PlayerControl.FindAction("Move", throwIfNotFound: true);
         m_PlayerControl_Jump = m_PlayerControl.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerControl_Interact = m_PlayerControl.FindAction("Interact", throwIfNotFound: true);
+        m_PlayerControl_OpenInventory = m_PlayerControl.FindAction("OpenInventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -200,6 +242,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControl_Attack;
     private readonly InputAction m_PlayerControl_Move;
     private readonly InputAction m_PlayerControl_Jump;
+    private readonly InputAction m_PlayerControl_Interact;
+    private readonly InputAction m_PlayerControl_OpenInventory;
     public struct PlayerControlActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -207,6 +251,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_PlayerControl_Attack;
         public InputAction @Move => m_Wrapper.m_PlayerControl_Move;
         public InputAction @Jump => m_Wrapper.m_PlayerControl_Jump;
+        public InputAction @Interact => m_Wrapper.m_PlayerControl_Interact;
+        public InputAction @OpenInventory => m_Wrapper.m_PlayerControl_OpenInventory;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -225,6 +271,12 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerControlActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerControlActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerControlActionsCallbackInterface.OnJump;
+                @Interact.started -= m_Wrapper.m_PlayerControlActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerControlActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerControlActionsCallbackInterface.OnInteract;
+                @OpenInventory.started -= m_Wrapper.m_PlayerControlActionsCallbackInterface.OnOpenInventory;
+                @OpenInventory.performed -= m_Wrapper.m_PlayerControlActionsCallbackInterface.OnOpenInventory;
+                @OpenInventory.canceled -= m_Wrapper.m_PlayerControlActionsCallbackInterface.OnOpenInventory;
             }
             m_Wrapper.m_PlayerControlActionsCallbackInterface = instance;
             if (instance != null)
@@ -238,6 +290,12 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
+                @OpenInventory.started += instance.OnOpenInventory;
+                @OpenInventory.performed += instance.OnOpenInventory;
+                @OpenInventory.canceled += instance.OnOpenInventory;
             }
         }
     }
@@ -256,5 +314,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnOpenInventory(InputAction.CallbackContext context);
     }
 }

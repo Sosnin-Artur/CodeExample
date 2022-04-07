@@ -5,14 +5,11 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 public static class AddressablesLoader 
 {
-    public static async Task InitAssets(string label, Transform parent)        
-    {
-        var locations = await Addressables.LoadResourceLocationsAsync(label).Task;
-
-        foreach (var location in locations)
+    public static async Task InitAssets(List<AssetReference> references, Transform parent)        
+    {        
+        foreach (var reference in references)
         {
-            await Addressables.InstantiateAsync(location, parent).Task;
+            await Addressables.InstantiateAsync(reference, parent).Task;
         }
-
     }
 }

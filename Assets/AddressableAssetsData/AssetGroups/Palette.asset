@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Palette
+  m_EditorClassIdentifier: 
+  m_GroupName: Palette
+  m_Data:
+    m_SerializedData: []
+  m_GUID: c85eb14089330a84588899651ceb05b9
+  m_SerializeEntries:
+  - m_GUID: 71ee1e8e9421dcf429361929cced8193
+    m_Address: New Palette
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2776de654724c4048bba087b8219abd3
+    m_Address: white
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: dd2c673ab5a920c47a3eba26aba4deb9, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 0e4f00d82ed02044089fa8d8cdc3f42d, type: 2}
+    - {fileID: 11400000, guid: 676284a4c49034d409f3a0fb5cf0383e, type: 2}
