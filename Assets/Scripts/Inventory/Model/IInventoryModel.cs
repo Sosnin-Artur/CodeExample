@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public interface IInventoryModel : IModel
 {
-    BaseItemObject[] Items { get; set; }
+    ReactiveProperty<bool> OpenInventory { get; set; } 
+    IInventoryData Inventory { get; set; }
     ReactiveProperty<BaseGroundItem> ItemToAdd { get; set; }
+    ReactiveProperty<BaseItemObject> ItemToEquip { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using ObjectPool;
+using UnityEngine.EventSystems;
 
 public class BasePoolableInventoryCell : BaseInventoryCell, IPoolable
 {
@@ -10,5 +11,5 @@ public class BasePoolableInventoryCell : BaseInventoryCell, IPoolable
     public virtual void Release()
     {
         gameObject.SetActive(false);
-    }
+    }    
 }

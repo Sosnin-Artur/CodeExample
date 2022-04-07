@@ -1,31 +1,29 @@
+using ObjectPool;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Zenject;
 
 public class ItemEjector : MonoBehaviour
 {        
     [SerializeField]
-    private float _range;
-    
-    private GroundItemPool _pool;
+    private float _range;        
 
-    [Inject]
-    public void Construct(GroundItemPool pool)
-    {
-        _pool = pool;
-    }
-
-    public void EjectFromPool(BaseItemObject item, Vector3 position)
-    {                                      
-        var direction = (position - transform.position).normalized;
-
-        var groundItem = _pool.Get();
-        groundItem.Item = item;
+    public void EjectFromPool(BaseItemObject item, Vector3 delta, 
+        GenericObjectPool<BasePoolableGroundItem,
+            IGroundItemFactory<BasePoolableGroundItem>> pool)
+    {        
+        var groundItem = pool.Get();
         
-        var target = transform.position + (direction.normalized * _range);
+        if (groundItem)
+        {
+            groundItem.Item = item;
 
-        groundItem.transform.position = target;
+            var target = transform.position + delta.normalized * _range;
+
+            groundItem.transform.position = target;
+        }        
     }
 }

@@ -6,33 +6,49 @@ using Zenject;
 
 public class InventoryView : MonoBehaviour, IInventoryView
 {
-    public event Action OnEnabledEvent;
-    public event Action OnDisabledEvent;
+    public event Action EnabledEvent;    
+    public event Action DisabledEvent;
+    public event Action<bool> SwitchedActivatorEvent;
+    public event Action<BaseItemObject, bool> DraggedItemEvent;
 
     [SerializeField]
-    private int _inventorySize;
+    private int _inventorySize = 3;
+    [SerializeField]
+    private List<BaseItemObject> _startItems;
+    [SerializeField]
+    private string _savePath = "default";
     [SerializeField]
     private Transform _container;
     [SerializeField]
     private Transform _draggingParent;    
     [SerializeField]
-    private ItemEjector _ejector;
+    private ItemEjector _ejector;    
 
     public int InventorySize => _inventorySize;
-    
-    public Transform DraggingParent => _draggingParent;
-
+    public List<BaseItemObject> StartItems => _startItems;
+    public string SavePath => _savePath;
     public Transform Container => _container;
-
+    public Transform DraggingParent => _draggingParent;    
     public ItemEjector Ejector => _ejector;
+    public GameObject GameObject => gameObject;
 
-    private void Awake()
+    public void Awake()
     {        
-        OnEnabledEvent?.Invoke();        
+        EnabledEvent?.Invoke();        
     }
-    
+
+    public void SwitchInventoryActivity(bool value)
+    {
+        SwitchedActivatorEvent?.Invoke(value);
+    }
+
+    public void AddItem(BaseItemObject item)
+    {
+        DraggedItemEvent?.Invoke(item, true);
+    }
+
     private void OnDisable()
     {        
-        OnDisabledEvent?.Invoke();
-    }
+        DisabledEvent?.Invoke();
+    }    
 }

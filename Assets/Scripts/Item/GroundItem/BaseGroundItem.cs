@@ -1,27 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public abstract class BaseGroundItem : MonoBehaviour
-{
-    [SerializeField]
-    private BaseItemObject _item;
+public abstract class BaseGroundItem : BaseItem
+{    
     [SerializeField]
     private SpriteRenderer _spriteRenderer;
 
-    public virtual BaseItemObject Item
+    public override BaseItemObject Item
     {
-        get => _item;
+        get => base.Item;
         set
         {
-            _item = value;
+            base.Item = value;
             _spriteRenderer.sprite = value.UiDisplay;
         }
-    }
+    }   
 
     private void Awake()
     {
-        _spriteRenderer.sprite = _item?.UiDisplay;
+        _spriteRenderer.sprite = Item?.UiDisplay;
     }
 }

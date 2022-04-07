@@ -8,5 +8,5 @@ public abstract class BaseInventoryPresenter : BasePresenter<IInventoryView>
 
     }
 
-    public abstract void Render(BaseItemObject[] items);
+    public abstract void Render(List<BaseInventoryCell> items);
 }
