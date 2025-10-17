@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: UI
+  m_EditorClassIdentifier: 
+  m_GroupName: UI
+  m_Data:
+    m_SerializedData: []
+  m_GUID: c292ad65dcd977841a717dd2fd980160
+  m_SerializeEntries:
+  - m_GUID: 9a40025040f50624ba7d5b4291cc44f9
+    m_Address: Inventory
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1ed73d5a5164d0040b8c1befee8f154a
+    m_Address: InventoryCell
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b1e04a7ff8732b54e929e1b6892aa6bf
+    m_Address: Healthbar
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: dd2c673ab5a920c47a3eba26aba4deb9, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: a0306ea460af1a640bad009682f8bba7, type: 2}
+    - {fileID: 11400000, guid: 14827934b5737cf4e984f65cff9bff9f, type: 2}

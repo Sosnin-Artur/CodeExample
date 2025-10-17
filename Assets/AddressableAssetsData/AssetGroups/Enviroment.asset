@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Enviroment
+  m_EditorClassIdentifier: 
+  m_GroupName: Enviroment
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 98d041850f8988840bfb751948d035d1
+  m_SerializeEntries:
+  - m_GUID: 1859f890fed82054a80d70507f139a90
+    m_Address: GroundFood
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9837e367c641d7143bb138a1d32e7cab
+    m_Address: GroundItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3595cb4e986695d44bb0eb76b56d2952
+    m_Address: GroundSword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fad893ac0f464084a917d97307b0a3f8
+    m_Address: LevelCrossing
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e707e807c38a3b7499c6ec91ee53f381
+    m_Address: PoolableObjectsParents
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a16c117e58061384d9b0ae9e2e9b9092
+    m_Address: Spawner
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 046c4546ccf23a24ba01f3867423ce22
+    m_Address: Chest
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: dd2c673ab5a920c47a3eba26aba4deb9, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 744b1a423bbbf1d47bbb9154402ae2d0, type: 2}
+    - {fileID: 11400000, guid: 07c2c545227bd7941a193f44c3ac3295, type: 2}

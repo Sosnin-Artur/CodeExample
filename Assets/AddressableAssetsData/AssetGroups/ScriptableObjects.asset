@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ScriptableObjects
+  m_EditorClassIdentifier: 
+  m_GroupName: ScriptableObjects
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 6a8b05591c7c4094fb1fcc962600b8ce
+  m_SerializeEntries:
+  - m_GUID: cde94d41f4f6ab84686a8e9a6e95061f
+    m_Address: Default
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 244bfa61e4017074a8d86fa5de60948e
+    m_Address: Ids
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1a1c305c54285b34fbfc531d72a81cbc
+    m_Address: Meal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5c715917d9f8cb846852d2f085b10bca
+    m_Address: Sword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: dd2c673ab5a920c47a3eba26aba4deb9, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 8e9009f477e2f484b85ee897b00a765f, type: 2}
+    - {fileID: 11400000, guid: 2879eb06ca10fb8468baccb5a785e799, type: 2}

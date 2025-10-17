@@ -35,7 +35,7 @@ namespace Zenject
         readonly List<BindStatement> _childBindings = new List<BindStatement>();
 
         readonly HashSet<Type> _validatedTypes = new HashSet<Type>();
-        readonly List<IValidatable> _validationQueue = new List<IValidatable>();
+        readonly List<IValidatable> _validationQueue = new List<IValidatable>();        
 
 #if !NOT_UNITY3D
         Transform _contextTransform;

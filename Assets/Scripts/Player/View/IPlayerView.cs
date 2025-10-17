@@ -1,15 +1,17 @@
 ﻿using System;
+using MVP;
+using UnityEngine;
 
 public interface IPlayerView : IView
 {
-    event Action OnEnabledEvent;
-    event Action OnDisabledEvent;
-        
-    void MoveInDirectionX(float direction);
-    
-    void StopMove();    
+    event Action EnabledEvent;
+    event Action DisabledEvent;
+    event Action<BaseGroundItem> TakingItemEvent;
 
-    void OnJump();    
+    Mover Mover { get; }
+    Transform Transform { get;}
+    Transform WeaponPlace { get; }
+    BaseInteractableObject IntersectedInteractableObject { get; }
 
-    bool IsGrounded();   
+    void Die();
 }

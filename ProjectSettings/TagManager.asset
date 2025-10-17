@@ -14,13 +14,13 @@ TagManager:
   - Player
   - Ground
   - GroundChecker
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - Container
+  - Weapon
+  - LevelCrossing
+  - GroundItem
+  - Spawner
+  - Chest
   - 
   - 
   - 
